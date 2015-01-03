@@ -8,9 +8,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.diabetes.MainActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/buttonBloodMeasurements"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/blood_measurements" />
+
+    <Button
+        android:id="@+id/buttonNutritionInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonBloodMeasurements"
+        android:layout_below="@+id/buttonBloodMeasurements"
+        android:text="@string/nutrition_information" />
+
+    <Button
+        android:id="@+id/buttonWorkoutInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonNutritionInformation"
+        android:layout_below="@+id/buttonNutritionInformation"
+        android:text="@string/workout_information" />
+
+    <Button
+        android:id="@+id/buttonClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonWorkoutInformation"
+        android:layout_alignParentBottom="true"
+        android:text="@string/close" />
 
 </RelativeLayout>

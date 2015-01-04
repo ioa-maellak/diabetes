@@ -8,5 +8,6 @@
     <string name="nutrition_information">Nutrition Information</string>
     <string name="workout_information">Workout Information</string>
     <string name="close">Close</string>
+    <string name="data_of_a_blood_glucose_measurement_">Data of a blood glucose measurement.</string>
 
 </resources>

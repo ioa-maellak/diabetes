@@ -1,18 +1,30 @@
 package com.example.diabetes;
 
+import java.util.Date;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.method.DateTimeKeyListener;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class MainActivity extends Activity {
 
 	SQLiteDatabase db;
+	String dt;
+	boolean flag=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,13 +46,40 @@ public class MainActivity extends Activity {
 		buttonBloodMeasurements.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				// TODO: have a look over here: http://examples.javacodegeeks.com/android/core/ui/alertdialog/android-prompt-user-input-dialog-example/ and here http://www.mkyong.com/android/android-prompt-user-input-dialog-example/ and remove this... used just for test purposes!
-				db.execSQL("INSERT INTO InsoulinTypes VALUES (1,'Novo Novorapid', 15, 67, 240);");	// Actually, keep this, it has real data.
-				db.execSQL("INSERT INTO InsoulinDose (insoulinType, dosage) VALUES (1, 14);");
-				db.execSQL("INSERT INTO BloodGlucose VALUES ('2015-01-02 00:00:00', 123);");
-				db.execSQL("INSERT INTO BloodGlucose VALUES (datetime('now'), 234);");
-				showMessage("Success", "Records Inserted!");
+//				db.execSQL("INSERT INTO InsoulinTypes VALUES (1,'Novo Novorapid', 15, 67, 240);");	// Actually, keep this, it has real data.
+//				db.execSQL("INSERT INTO InsoulinDose (insoulinType, dosage) VALUES (1, 14);");
+//				db.execSQL("INSERT INTO BloodGlucose VALUES ('2015-01-02 00:00:00', 123);");
+				dt="";
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				Date date = new Date();
+				// get blood_glucose_form.xml view
+				LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+				// set blood_glucose_form.xml to be the layout file of the alertdialog builder
+				final View promptView = layoutInflater.inflate(R.layout.blood_glucose_form, null);
+				((EditText) promptView.findViewById(R.id.datetime)).setText(dateFormat.format(date));
+				alertDialogBuilder.setView(promptView);
+				alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dt = ((EditText) promptView.findViewById(R.id.datetime)).getText().toString();
+						flag=true;
+						dialog.dismiss();
+					}
+				});
+				alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						flag=true;
+						dialog.cancel();
+					}
+				});
+				alertDialogBuilder.setCancelable(false);	// TODO: find what is wrong with modal dialogs!!!
+				AlertDialog alertD = alertDialogBuilder.create();	// create an alert dialog
+				alertD.show();
+				showMessage("Worked", dt);
 			}
 		});
 		

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="1"
+    android:contentDescription="@string/data_of_a_blood_glucose_measurement_"
+    android:rowCount="2" >
+
+    <EditText
+        android:id="@+id/datetime"
+        android:layout_width="match_parent"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="0"
+        android:ems="10"
+        android:inputType="text"
+        android:singleLine="true"
+        android:text="2015-01-04 23:48:01" >
+    </EditText>
+    
+    <EditText
+        android:id="@+id/measurement"
+        android:layout_width="match_parent"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="1"
+        android:ems="10"
+        android:inputType="text"
+        android:text="100" />
+</GridLayout>

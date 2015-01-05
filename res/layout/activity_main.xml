@@ -33,11 +33,19 @@
         android:text="@string/workout_information" />
 
     <Button
-        android:id="@+id/buttonClose"
+        android:id="@+id/buttonClosePlot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/buttonWorkoutInformation"
         android:layout_alignParentBottom="true"
         android:text="@string/close" />
+
+    <Button
+        android:id="@+id/buttonBloodGlucoseStats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonWorkoutInformation"
+        android:layout_centerHorizontal="true"
+        android:text="@string/blood_glucose_stats" />
 
 </RelativeLayout>

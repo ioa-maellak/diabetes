@@ -20,22 +20,32 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f040000;
         public static final int activity_vertical_margin=0x7f040001;
+        public static final int domain_label_font_size=0x7f040004;
+        public static final int domain_tick_label_font_size=0x7f040007;
+        public static final int legend_text_font_size=0x7f040008;
+        public static final int pie_segment_label_font_size=0x7f040002;
+        public static final int range_label_font_size=0x7f040005;
+        public static final int range_tick_label_font_size=0x7f040006;
+        public static final int title_font_size=0x7f040003;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080006;
+        public static final int action_settings=0x7f080008;
+        public static final int buttonBloodGlucoseStats=0x7f080004;
         public static final int buttonBloodMeasurements=0x7f080000;
-        public static final int buttonClose=0x7f080003;
+        public static final int buttonClosePlot=0x7f080003;
         public static final int buttonNutritionInformation=0x7f080001;
         public static final int buttonWorkoutInformation=0x7f080002;
-        public static final int datetime=0x7f080004;
-        public static final int measurement=0x7f080005;
+        public static final int datetime=0x7f080006;
+        public static final int measurement=0x7f080007;
+        public static final int plot=0x7f080005;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int blood_glucose_form=0x7f030001;
+        public static final int activity_plot=0x7f030001;
+        public static final int blood_glucose_form=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -43,11 +53,14 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050000;
+        public static final int blood_glucose_stats=0x7f050008;
         public static final int blood_measurements=0x7f050003;
         public static final int close=0x7f050006;
         public static final int data_of_a_blood_glucose_measurement_=0x7f050007;
+        public static final int display_charts_of_measurements_=0x7f050009;
         public static final int hello_world=0x7f050001;
         public static final int nutrition_information=0x7f050004;
+        public static final int title_activity_plot=0x7f05000a;
         public static final int workout_information=0x7f050005;
     }
     public static final class style {

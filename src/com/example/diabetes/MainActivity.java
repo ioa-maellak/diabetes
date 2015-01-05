@@ -1,13 +1,12 @@
 package com.example.diabetes;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.method.DateTimeKeyListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,15 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.*;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class MainActivity extends Activity {
 
 	SQLiteDatabase db;
-	String dt;
-	boolean flag=false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,40 +47,34 @@ public class MainActivity extends Activity {
 		buttonBloodMeasurements.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO: have a look over here: http://examples.javacodegeeks.com/android/core/ui/alertdialog/android-prompt-user-input-dialog-example/ and here http://www.mkyong.com/android/android-prompt-user-input-dialog-example/ and remove this... used just for test purposes!
 //				db.execSQL("INSERT INTO InsoulinTypes VALUES (1,'Novo Novorapid', 15, 67, 240);");	// Actually, keep this, it has real data.
 //				db.execSQL("INSERT INTO InsoulinDose (insoulinType, dosage) VALUES (1, 14);");
-//				db.execSQL("INSERT INTO BloodGlucose VALUES ('2015-01-02 00:00:00', 123);");
-				dt="";
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-				Date date = new Date();
 				// get blood_glucose_form.xml view
 				LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 				// set blood_glucose_form.xml to be the layout file of the alertdialog builder
 				final View promptView = layoutInflater.inflate(R.layout.blood_glucose_form, null);
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				Date date = new Date();
 				((EditText) promptView.findViewById(R.id.datetime)).setText(dateFormat.format(date));
 				alertDialogBuilder.setView(promptView);
 				alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						dt = ((EditText) promptView.findViewById(R.id.datetime)).getText().toString();
-						flag=true;
+						db.execSQL("INSERT INTO BloodGlucose VALUES ('"+((EditText) promptView.findViewById(R.id.datetime)).getText().toString()+"', "+((EditText) promptView.findViewById(R.id.measurement)).getText().toString()+");");
 						dialog.dismiss();
 					}
 				});
 				alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						flag=true;
 						dialog.cancel();
 					}
 				});
-				alertDialogBuilder.setCancelable(false);	// TODO: find what is wrong with modal dialogs!!!
+				alertDialogBuilder.setCancelable(false);
 				AlertDialog alertD = alertDialogBuilder.create();	// create an alert dialog
 				alertD.show();
-				showMessage("Worked", dt);
 			}
 		});
 		
@@ -101,7 +96,33 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		Button buttonClose = (Button) findViewById(R.id.buttonClose);
+		Button buttonBloodGlucoseStats = (Button) findViewById(R.id.buttonBloodGlucoseStats);
+		buttonBloodGlucoseStats.setOnClickListener(new View.OnClickListener() {	// TODO: if I want more stats, I should call a new xml
+			@Override
+			public void onClick(View v) {
+				HashMap<Date, Integer> values=new HashMap<Date, Integer>();
+				String selectQuery = "SELECT measuredAt, glucoseValue FROM BloodGlucose;";
+				Cursor cursor = db.rawQuery(selectQuery, null);
+				cursor.moveToFirst();
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				while (cursor.isAfterLast() == false)
+				{
+					try {
+						values.put(dateFormat.parse(cursor.getString(cursor.getColumnIndex("measuredAt"))), cursor.getInt(cursor.getColumnIndex("glucoseValue")));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					cursor.moveToNext();
+				}
+				cursor.close();
+				Intent intent = new Intent(MainActivity.this, PlotActivity.class);
+				intent.putExtra("valuesHashMap", values);
+        		startActivity(intent);
+			}
+		});
+		
+		Button buttonClose = (Button) findViewById(R.id.buttonClosePlot);
 		buttonClose.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

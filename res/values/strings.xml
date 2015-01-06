@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">diabetes</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="blood_measurements">Blood Measurements</string>
     <string name="nutrition_information">Nutrition Information</string>

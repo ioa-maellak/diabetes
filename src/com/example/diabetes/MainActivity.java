@@ -2,6 +2,7 @@ package com.example.diabetes;
 
 import java.util.Date;
 import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,11 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.*;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -43,7 +46,7 @@ public class MainActivity extends Activity {
 				LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 				final View promptView = layoutInflater.inflate(R.layout.blood_glucose_form, null);	// Get blood_glucose_form.xml view
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date date = new Date();
 				((EditText) promptView.findViewById(R.id.datetime)).setText(dateFormat.format(date));
 				alertDialogBuilder.setView(promptView);	// Set blood_glucose_form.xml to be the layout file of the alertdialog builder
@@ -51,7 +54,10 @@ public class MainActivity extends Activity {
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						db.execSQL("INSERT INTO BloodGlucose VALUES ('"+((EditText) promptView.findViewById(R.id.datetime)).getText().toString()+"', "+((EditText) promptView.findViewById(R.id.measurement)).getText().toString()+");");
+						ContentValues valuesToInsert = new ContentValues();
+						valuesToInsert.put("measuredAt", ((EditText) promptView.findViewById(R.id.datetime)).getText().toString());
+						valuesToInsert.put("glucoseValue", ((EditText) promptView.findViewById(R.id.measurement)).getText().toString());
+						db.insert("BloodGlucose", null, valuesToInsert);
 						dialog.dismiss();
 					}
 				});
@@ -87,18 +93,17 @@ public class MainActivity extends Activity {
 		buttonBloodGlucoseStats.setOnClickListener(new View.OnClickListener() {	// TODO: if I want more stats, I should call a new Intent, giving them the appropriate values in the hashmap.
 			@Override
 			public void onClick(View v) {
-				HashMap<Integer, Integer> values=new HashMap<Integer, Integer>();
-				String selectQuery = "SELECT strftime('%H',measuredAt) AS Hour, AVG(glucoseValue) AS AVGGlucose FROM BloodGlucose GROUP BY strftime('%H',measuredAt) ORDER BY strftime('%H',measuredAt);";
-				Cursor cursor = db.rawQuery(selectQuery, null);
+				HashMap<Integer, Integer> dbValues=new HashMap<Integer, Integer>();
+				Cursor cursor = db.rawQuery("SELECT strftime('%H',measuredAt) AS Hour, AVG(glucoseValue) AS AVGGlucose FROM BloodGlucose GROUP BY strftime('%H',measuredAt) ORDER BY strftime('%H',measuredAt);", null);
 				cursor.moveToFirst();
 				while (cursor.isAfterLast() == false)
 				{
-					values.put(cursor.getInt(cursor.getColumnIndex("Hour")), cursor.getInt(cursor.getColumnIndex("AVGGlucose")));
+					dbValues.put(cursor.getInt(cursor.getColumnIndex("Hour")), cursor.getInt(cursor.getColumnIndex("AVGGlucose")));
 					cursor.moveToNext();
 				}
 				cursor.close();
 				Intent intent = new Intent(MainActivity.this, PlotActivity.class);
-				intent.putExtra("valuesHashMap", values);
+				intent.putExtra("valuesHashMap", dbValues);
         		startActivity(intent);
 			}
 		});

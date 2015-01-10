@@ -16,7 +16,6 @@ import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 
 import android.app.Activity;
-import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -61,14 +60,5 @@ public class PlotActivity extends Activity {
 				finish();
 			}
 		});
-	}
-	
-	public void showMessage(String title,String message)
-	{
-		Builder builder=new Builder(this);
-		builder.setCancelable(true);
-		builder.setTitle(title);
-		builder.setMessage(message);
-		builder.show();
 	}
 }

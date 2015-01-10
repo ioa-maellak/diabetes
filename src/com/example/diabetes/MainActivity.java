@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						ContentValues valuesToInsert = new ContentValues();
 						valuesToInsert.put("measuredAt", ((EditText) promptView.findViewById(R.id.datetime)).getText().toString());
-						valuesToInsert.put("glucoseValue", ((EditText) promptView.findViewById(R.id.measurement)).getText().toString());
+						valuesToInsert.put("glucoseValue", Integer.parseInt(((EditText) promptView.findViewById(R.id.measurement)).getText().toString()));
 						db.insert("BloodGlucose", null, valuesToInsert);
 						dialog.dismiss();
 					}
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				HashMap<Integer, Integer> dbValues=new HashMap<Integer, Integer>();
-				Cursor cursor = db.rawQuery("SELECT strftime('%H',measuredAt) AS Hour, AVG(glucoseValue) AS AVGGlucose FROM BloodGlucose GROUP BY strftime('%H',measuredAt) ORDER BY strftime('%H',measuredAt);", null);
+				Cursor cursor = db.rawQuery("SELECT strftime('%HH',measuredAt) AS Hour, AVG(glucoseValue) AS AVGGlucose FROM BloodGlucose GROUP BY strftime('%HH',measuredAt) ORDER BY strftime('%HH',measuredAt);", null);
 				cursor.moveToFirst();
 				while (cursor.isAfterLast() == false)
 				{

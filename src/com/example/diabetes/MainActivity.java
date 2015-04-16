@@ -13,7 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.TimePicker;
+import android.widget.Toast;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,9 +40,10 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		// Creating database and tables
 		db=openOrCreateDatabase("diabetes", Context.MODE_PRIVATE, null);
+//		db.execSQL("DROP TABLE BloodGlucose;");
 		db.execSQL("CREATE TABLE IF NOT EXISTS InsoulinTypes (insoulinID integer, name varchar(50), ActingStartMinutes integer, ActingPeakMinutes integer, durationMinutes integer, PRIMARY KEY (insoulinID));");
-		db.execSQL("CREATE TABLE IF NOT EXISTS InsoulinDose (givenAt TEXT DEFAULT CURRENT_DATETIME, insoulinType integer, dosage double precision, FOREIGN KEY (insoulinType) REFERENCES InsoulinTypes(insoulinID), PRIMARY KEY (givenAt, insoulinType) );");
-		db.execSQL("CREATE TABLE IF NOT EXISTS BloodGlucose (measuredAt TEXT DEFAULT CURRENT_DATETIME, glucoseValue smallint, PRIMARY KEY (measuredAt));");
+		db.execSQL("CREATE TABLE IF NOT EXISTS InsoulinDose (givenAt TEXT, insoulinType integer, dosage double precision, FOREIGN KEY (insoulinType) REFERENCES InsoulinTypes(insoulinID), PRIMARY KEY (givenAt, insoulinType) );");
+		db.execSQL("CREATE TABLE IF NOT EXISTS BloodGlucose (measuredAt TEXT, glucoseValue smallint, PRIMARY KEY (measuredAt));");
 		Button buttonBloodMeasurements = (Button) findViewById(R.id.buttonBloodMeasurements);
 		buttonBloodMeasurements.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -46,18 +51,27 @@ public class MainActivity extends Activity {
 				LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 				final View promptView = layoutInflater.inflate(R.layout.blood_glucose_form, null);	// Get blood_glucose_form.xml view
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				Date date = new Date();
-				((EditText) promptView.findViewById(R.id.datetime)).setText(dateFormat.format(date));
+				((DatePicker) promptView.findViewById(R.id.datePicker)).setSpinnersShown(false);
+				((TimePicker) promptView.findViewById(R.id.timePicker)).setIs24HourView(true);
+				((NumberPicker)promptView.findViewById(R.id.measurement)).setMaxValue(1000);
+				((NumberPicker)promptView.findViewById(R.id.measurement)).setMinValue(10);
+				((NumberPicker)promptView.findViewById(R.id.measurement)).setValue(100);
 				alertDialogBuilder.setView(promptView);	// Set blood_glucose_form.xml to be the layout file of the alertdialog builder
 				alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						ContentValues valuesToInsert = new ContentValues();
-						valuesToInsert.put("measuredAt", ((EditText) promptView.findViewById(R.id.datetime)).getText().toString());
-						valuesToInsert.put("glucoseValue", Integer.parseInt(((EditText) promptView.findViewById(R.id.measurement)).getText().toString()));
-						db.insert("BloodGlucose", null, valuesToInsert);
+						valuesToInsert.put("measuredAt", (((DatePicker) promptView.findViewById(R.id.datePicker)).getYear()+"-"+
+						((((DatePicker)promptView.findViewById(R.id.datePicker)).getMonth() < 10 ) ? "0" + ((DatePicker)promptView.findViewById(R.id.datePicker)).getMonth() : ((DatePicker)promptView.findViewById(R.id.datePicker)).getMonth())+"-"+	//This is a little bit tricky, I have to prepend 0 for numbers between 0 and 9.
+						((((DatePicker)promptView.findViewById(R.id.datePicker)).getDayOfMonth() < 10 ) ? "0" + ((DatePicker)promptView.findViewById(R.id.datePicker)).getDayOfMonth() : ((DatePicker)promptView.findViewById(R.id.datePicker)).getDayOfMonth())+"T"+
+						((((TimePicker)promptView.findViewById(R.id.timePicker)).getCurrentHour() < 10 ) ? "0" + ((TimePicker)promptView.findViewById(R.id.timePicker)).getCurrentHour() : ((TimePicker)promptView.findViewById(R.id.timePicker)).getCurrentHour())+":"+
+						((((TimePicker)promptView.findViewById(R.id.timePicker)).getCurrentMinute() < 10 ) ? "0" + ((TimePicker)promptView.findViewById(R.id.timePicker)).getCurrentMinute() : ((TimePicker)promptView.findViewById(R.id.timePicker)).getCurrentMinute())+":01.234"));
+						valuesToInsert.put("glucoseValue", ((NumberPicker) promptView.findViewById(R.id.measurement)).getValue());
+						if(db.insert("BloodGlucose", null, valuesToInsert) == -1)
+						{
+							Toast.makeText(getApplicationContext(), "Error in blood glucose insertion", Toast.LENGTH_LONG).show();
+						}
 						dialog.dismiss();
 					}
 				});
@@ -94,7 +108,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				HashMap<Integer, Integer> dbValues=new HashMap<Integer, Integer>();
-				Cursor cursor = db.rawQuery("SELECT strftime('%HH',measuredAt) AS Hour, AVG(glucoseValue) AS AVGGlucose FROM BloodGlucose GROUP BY strftime('%HH',measuredAt) ORDER BY strftime('%HH',measuredAt);", null);
+				Cursor cursor = db.rawQuery("SELECT strftime('%H',measuredAt) AS Hour, AVG(glucoseValue) AS AVGGlucose FROM BloodGlucose GROUP BY strftime('%H',measuredAt) ORDER BY strftime('%H',measuredAt);", null);
 				cursor.moveToFirst();
 				while (cursor.isAfterLast() == false)
 				{

@@ -32,15 +32,19 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080008;
+        public static final int action_settings=0x7f08000c;
         public static final int buttonBloodGlucoseStats=0x7f080004;
         public static final int buttonBloodMeasurements=0x7f080000;
         public static final int buttonClose=0x7f080003;
         public static final int buttonNutritionInformation=0x7f080001;
         public static final int buttonWorkoutInformation=0x7f080002;
-        public static final int datetime=0x7f080006;
-        public static final int measurement=0x7f080007;
+        public static final int datePicker=0x7f080006;
+        public static final int lefts=0x7f080008;
+        public static final int measurement=0x7f08000b;
         public static final int plot=0x7f080005;
+        public static final int rights=0x7f08000a;
+        public static final int timePicker=0x7f080009;
+        public static final int titles=0x7f080007;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -58,7 +62,9 @@ public final class R {
         public static final int close=0x7f050005;
         public static final int data_of_a_blood_glucose_measurement_=0x7f050006;
         public static final int display_charts_of_measurements_=0x7f050008;
+        public static final int glucoseTitle=0x7f05000b;
         public static final int nutrition_information=0x7f050003;
+        public static final int timesTitle=0x7f05000a;
         public static final int title_activity_plot=0x7f050009;
         public static final int workout_information=0x7f050004;
     }

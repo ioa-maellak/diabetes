@@ -38,6 +38,7 @@ public class PlotActivity extends Activity {
 		    Entry<Integer, Integer> entry = entries.next();
 		    hours.add(entry.getKey());
 		    measurements.add(entry.getValue());
+		    System.err.println("41, "+entry.getKey()+entry.getValue());
 		}
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 		setContentView(R.layout.activity_plot);

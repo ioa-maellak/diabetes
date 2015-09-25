@@ -99,7 +99,8 @@ public class MainActivity extends Activity {
 		buttonWorkoutInformation.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showMessage("Success", "Workout info clicked!");	// TODO
+                Intent intent = new Intent(MainActivity.this, WorkoutActivity.class);
+                startActivity(intent);
 			}
 		});
 		

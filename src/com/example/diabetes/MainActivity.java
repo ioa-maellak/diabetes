@@ -91,7 +91,8 @@ public class MainActivity extends Activity {
 		buttonNutritionInformation.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showMessage("Success", "Nutrition info clicked!");	// TODO
+				Intent intent = new Intent(MainActivity.this, Nutrition.class);
+				startActivity(intent);
 			}
 		});
 		

@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:2:1-45:12
+ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:2:1-56:12
 	package
 		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:3:5-35
 	android:versionName
@@ -18,7 +18,7 @@ ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:7:5-9:41
 	android:minSdkVersion
 		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:8:9-35
 application
-ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:11:5-43:19
+ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:11:5-54:19
 	android:label
 		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:14:9-41
 	android:allowBackup
@@ -55,3 +55,9 @@ ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:34:9-42:20
 		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:36:13-59
 	android:name
 		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:35:13-44
+activity#com.example.diabetes.Nutrition
+ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:44:9-52:20
+	android:label
+		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:46:13-59
+	android:name
+		ADDED from /home/pmanousi/git/diabetes/AndroidManifest.xml:45:13-38

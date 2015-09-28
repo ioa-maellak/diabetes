@@ -23,6 +23,7 @@
     <string name="glucoseTitle">Glucose</string>
     <string name="nutrition_information">Nutrition Information</string>
     <string name="timesTitle">Time</string>
+    <string name="title_activity_nutrition">Nutrition</string>
     <string name="title_activity_plot">PlotActivity</string>
     <string name="title_activity_workout">Workout Activity</string>
     <string name="workout_information">Workout Information</string>
